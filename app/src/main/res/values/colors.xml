@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="lith">#60401f</color>
+    <color name="lith_picker">#744d25</color>
+    <color name="bichos">#F5E9B9</color>
+</resources>
