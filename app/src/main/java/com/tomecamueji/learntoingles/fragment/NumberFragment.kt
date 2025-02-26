@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tomecamueji.learntoingles.MainItem
 import com.tomecamueji.learntoingles.R
 
 class NumberFragment:Fragment() {
-
     private lateinit var rvNum: RecyclerView
-    private var mediaPlayer = MediaPlayer()
+    private lateinit var imgNum: ImageView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_number,container,false)
     }
@@ -23,64 +23,32 @@ class NumberFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val numItens = mutableListOf<MainItem>()
 
-        val mainItens = mutableListOf<MainItem>()
-        mainItens.add(MainItem(id = 1, drawebleId = R.drawable.um, rawRes = R.raw.dog))
-        mainItens.add(MainItem(id = 2, drawebleId = R.drawable.dois, rawRes = R.raw.lion))
-        mainItens.add(MainItem(id = 3, drawebleId = R.drawable.tres, rawRes = R.raw.cat))
-        mainItens.add(MainItem(id = 4, drawebleId = R.drawable.quatro, rawRes = R.raw.monkey))
-        mainItens.add(MainItem(id = 5, drawebleId = R.drawable.cinco, rawRes = R.raw.sheep))
-        mainItens.add(MainItem(id = 6, drawebleId = R.drawable.vaca, rawRes = R.raw.cow))
-        mainItens.add(MainItem(id = 7, drawebleId = R.drawable.result_banteng, rawRes = R.raw.dog))
-        mainItens.add(MainItem(id = 8, drawebleId = R.drawable.result_kelinci, rawRes = R.raw.dog))
 
-        val adapter = MainAdapter(mainItens) { soundRes ->
-            playSound(soundRes)
-        }
+
+       val adapter = NumAdapter()
         rvNum = view.findViewById(R.id.rv_main)
         rvNum.adapter = adapter
-        rvNum.layoutManager = GridLayoutManager(requireContext(),2)
-
-
+        rvNum.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun playSound(soundRes: Int){
-        mediaPlayer.release() // Libera o player anterior antes de criar um novo
-        mediaPlayer = MediaPlayer.create(requireContext(),soundRes)
-        mediaPlayer.start()
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release() // Libera o recurso ao sair do fragmento
-    }
+    class NumAdapter: RecyclerView.Adapter<NumAdapter.NumViewHolder>(){
 
-    class  MainAdapter(
-        private val mainItem: List<MainItem>,
-        private val onItemClick: (Int) -> Unit
-    ):RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_number,parent,false)
-            return MainViewHolder(view)
+            return NumViewHolder(view)
         }
 
-        override fun getItemCount(): Int = mainItem.size
-
-
-        override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-            val item = mainItem[position]
-            holder.bind(item, onItemClick)
+        override fun getItemCount(): Int {
+            return 20
         }
 
-        inner class  MainViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-            fun bind(item:MainItem, onItemClick: (Int) -> Unit){
-                val imgNum: ImageView = itemView.findViewById(R.id.img_num)
-                imgNum.setImageResource(item.drawebleId)
+        override fun onBindViewHolder(holder: NumViewHolder, position: Int) {
 
-                imgNum.setOnClickListener {
-                    onItemClick(item.rawRes) // Chama a função de clique com o som correspondente
-                }
-            }
+        }
+
+        class NumViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
         }
     }
